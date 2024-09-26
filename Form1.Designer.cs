@@ -770,7 +770,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AguilaRemoteControl";
             this.Text = "EAGLE v1.0";
-            this.Load += new System.EventHandler(this.AguilaRemoteControl_Load);
             this.gb_cell_selection.ResumeLayout(false);
             this.gb_cell_selection.PerformLayout();
             this.tab_result.ResumeLayout(false);
