@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AguilaRemoteControl));
             this.gb_cell_selection = new System.Windows.Forms.GroupBox();
+            this.ScanCells_btn = new System.Windows.Forms.Button();
             this.cb_select_all = new System.Windows.Forms.CheckBox();
             this.cb_col_F = new System.Windows.Forms.CheckBox();
             this.cb_36 = new System.Windows.Forms.CheckBox();
@@ -76,14 +77,16 @@
             this.tab_result = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.rtb_result = new System.Windows.Forms.RichTextBox();
+            this.inputBox = new System.Windows.Forms.TextBox();
             this.tab_tp_deploy = new System.Windows.Forms.TabPage();
+            this.abort_btn = new System.Windows.Forms.Button();
             this.comboBoxFeatures = new System.Windows.Forms.ComboBox();
             this.run_config_box = new System.Windows.Forms.TextBox();
             this.execute_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.l_TestProgram = new System.Windows.Forms.Label();
             this.tab_control = new System.Windows.Forms.TabControl();
-            this.ScanCells_btn = new System.Windows.Forms.Button();
+            this.sendInput_btn = new System.Windows.Forms.Button();
             this.gb_cell_selection.SuspendLayout();
             this.tab_result.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -145,6 +148,17 @@
             this.gb_cell_selection.TabIndex = 0;
             this.gb_cell_selection.TabStop = false;
             this.gb_cell_selection.Text = "Cell Selection";
+            // 
+            // ScanCells_btn
+            // 
+            this.ScanCells_btn.BackColor = System.Drawing.Color.SkyBlue;
+            this.ScanCells_btn.Location = new System.Drawing.Point(266, 10);
+            this.ScanCells_btn.Name = "ScanCells_btn";
+            this.ScanCells_btn.Size = new System.Drawing.Size(134, 32);
+            this.ScanCells_btn.TabIndex = 43;
+            this.ScanCells_btn.Text = "Scan cells online";
+            this.ScanCells_btn.UseVisualStyleBackColor = false;
+            this.ScanCells_btn.Click += new System.EventHandler(this.ScanCells_btn_Click);
             // 
             // cb_select_all
             // 
@@ -645,7 +659,9 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.tabPage1.Controls.Add(this.sendInput_btn);
             this.tabPage1.Controls.Add(this.rtb_result);
+            this.tabPage1.Controls.Add(this.inputBox);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -659,14 +675,29 @@
             this.rtb_result.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtb_result.Location = new System.Drawing.Point(9, 12);
             this.rtb_result.Name = "rtb_result";
-            this.rtb_result.Size = new System.Drawing.Size(1112, 442);
+            this.rtb_result.Size = new System.Drawing.Size(1112, 407);
             this.rtb_result.TabIndex = 0;
             this.rtb_result.Text = "";
             this.rtb_result.WordWrap = false;
             // 
+            // inputBox
+            // 
+            this.inputBox.BackColor = System.Drawing.SystemColors.Info;
+            this.inputBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.inputBox.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputBox.Location = new System.Drawing.Point(9, 427);
+            this.inputBox.Margin = new System.Windows.Forms.Padding(7, 5, 7, 5);
+            this.inputBox.Name = "inputBox";
+            this.inputBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.inputBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.inputBox.Size = new System.Drawing.Size(964, 27);
+            this.inputBox.TabIndex = 50;
+            this.inputBox.WordWrap = false;
+            // 
             // tab_tp_deploy
             // 
             this.tab_tp_deploy.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.tab_tp_deploy.Controls.Add(this.abort_btn);
             this.tab_tp_deploy.Controls.Add(this.comboBoxFeatures);
             this.tab_tp_deploy.Controls.Add(this.run_config_box);
             this.tab_tp_deploy.Controls.Add(this.execute_btn);
@@ -678,6 +709,17 @@
             this.tab_tp_deploy.Size = new System.Drawing.Size(621, 222);
             this.tab_tp_deploy.TabIndex = 0;
             this.tab_tp_deploy.Text = "Features";
+            // 
+            // abort_btn
+            // 
+            this.abort_btn.BackColor = System.Drawing.Color.Coral;
+            this.abort_btn.Location = new System.Drawing.Point(322, 179);
+            this.abort_btn.Name = "abort_btn";
+            this.abort_btn.Size = new System.Drawing.Size(289, 32);
+            this.abort_btn.TabIndex = 52;
+            this.abort_btn.Text = "Abort";
+            this.abort_btn.UseVisualStyleBackColor = false;
+            this.abort_btn.Click += new System.EventHandler(this.abort_btn_Click);
             // 
             // comboBoxFeatures
             // 
@@ -706,10 +748,10 @@
             // 
             // execute_btn
             // 
-            this.execute_btn.BackColor = System.Drawing.Color.SkyBlue;
+            this.execute_btn.BackColor = System.Drawing.Color.SpringGreen;
             this.execute_btn.Location = new System.Drawing.Point(10, 179);
             this.execute_btn.Name = "execute_btn";
-            this.execute_btn.Size = new System.Drawing.Size(601, 32);
+            this.execute_btn.Size = new System.Drawing.Size(306, 32);
             this.execute_btn.TabIndex = 4;
             this.execute_btn.Text = "Execute";
             this.execute_btn.UseVisualStyleBackColor = false;
@@ -745,16 +787,16 @@
             this.tab_control.Size = new System.Drawing.Size(629, 251);
             this.tab_control.TabIndex = 1;
             // 
-            // ScanCells_btn
+            // sendInput_btn
             // 
-            this.ScanCells_btn.BackColor = System.Drawing.Color.SkyBlue;
-            this.ScanCells_btn.Location = new System.Drawing.Point(266, 10);
-            this.ScanCells_btn.Name = "ScanCells_btn";
-            this.ScanCells_btn.Size = new System.Drawing.Size(134, 32);
-            this.ScanCells_btn.TabIndex = 43;
-            this.ScanCells_btn.Text = "Scan cells online";
-            this.ScanCells_btn.UseVisualStyleBackColor = false;
-            this.ScanCells_btn.Click += new System.EventHandler(this.ScanCells_btn_Click);
+            this.sendInput_btn.BackColor = System.Drawing.Color.SkyBlue;
+            this.sendInput_btn.Location = new System.Drawing.Point(983, 425);
+            this.sendInput_btn.Name = "sendInput_btn";
+            this.sendInput_btn.Size = new System.Drawing.Size(138, 30);
+            this.sendInput_btn.TabIndex = 43;
+            this.sendInput_btn.Text = "Send Input";
+            this.sendInput_btn.UseVisualStyleBackColor = false;
+            this.sendInput_btn.Click += new System.EventHandler(this.sendInput_btn_Click);
             // 
             // AguilaRemoteControl
             // 
@@ -774,6 +816,7 @@
             this.gb_cell_selection.PerformLayout();
             this.tab_result.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.tab_tp_deploy.ResumeLayout(false);
             this.tab_tp_deploy.PerformLayout();
             this.tab_control.ResumeLayout(false);
@@ -838,6 +881,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxFeatures;
         private System.Windows.Forms.Button ScanCells_btn;
+        private System.Windows.Forms.Button abort_btn;
+        private System.Windows.Forms.TextBox inputBox;
+        private System.Windows.Forms.Button sendInput_btn;
     }
 }
 

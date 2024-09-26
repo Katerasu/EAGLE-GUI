@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Speech.Synthesis;
+using System.Management;
 
 
 namespace AguilaRemoteControl
@@ -34,6 +36,15 @@ namespace AguilaRemoteControl
             WriteConsole($"========== Aguila Remote Control Version 1.0 ==========" + Environment.NewLine);
 
             LoadFeatures();
+
+            abort_btn.Enabled = false;
+            abort_btn.BackColor = Color.Gray;
+
+            sendInput_btn.Enabled = false;
+            sendInput_btn.BackColor = Color.Gray;
+
+            inputBox.Enabled = false;
+            inputBox.BackColor = Color.Gray;
         }
 
         /////////////////// Features ///////////////////
@@ -247,100 +258,6 @@ namespace AguilaRemoteControl
             SetCheckBoxesCheckedState(new[] { cb_col_A, cb_col_B, cb_col_C, cb_col_D, cb_col_E, cb_col_F }, cb_select_all.Checked);
         }
 
-
-        /////////////////// Button Clicked ///////////////////
-        private void execute_btn_Click(object sender, EventArgs e)
-        {
-            // Disable the button for prevent multi click
-            execute_btn.Enabled = false;
-
-            string selectedCells = string.Join(",", CheckCheckBoxes());
-            string command = run_config_box.Text + " " + selectedCells;
-            
-            // Create a new process start info
-            ProcessStartInfo processStartInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = "/c " + $@"{command}",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
-
-            // Start the process using the Process class
-            Process process = new Process { StartInfo = processStartInfo };
-
-            // Subscribe to the OutputDataReceived event
-            process.OutputDataReceived += (sender1, args) =>
-            {
-                if (!string.IsNullOrEmpty(args.Data))
-                {
-                    // This will be called in real-time when the process writes to its standard output
-                    WriteConsole(args.Data); // Replace with your method to handle the output
-                }
-            };
-
-            // Set EnableRaisingEvents to true to allow the Exited event to be raised
-            process.EnableRaisingEvents = true;
-
-            process.Exited += (sender1, args) =>
-            {
-                // Re-enable the button on the UI thread
-                this.Invoke(new Action(() =>
-                {
-                    execute_btn.Enabled = true;
-                    process.Close();
-                }));
-                //execute_btn.Enabled = true;
-                //process.Dispose();
-            };
-
-            try
-            {
-                // Start the process
-                process.Start();
-                // Begin asynchronous read of the standard output stream
-                process.BeginOutputReadLine();
-                // Begin asynchronous read of the standard error stream (if needed)
-                process.BeginErrorReadLine();
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions that occur during process execution
-                WriteConsole($"An error occurred: {ex.Message}");
-                execute_btn.Enabled = true;
-            }
-        }
-
-        private async void ScanCells_btn_Click(object sender, EventArgs e)
-        {
-            List<string> cellsIp = new List<string>();
-            WriteLine("Scanning cells status...");
-            ScanCells_btn.Enabled = false;
-
-            // Get all cells IP into string list
-            for (int i = 1; i <= 36; i++)
-            {
-                string ip = $"10.250.0.{i}";
-                cellsIp.Add(ip);
-            }
-            
-            // Create a list to hold all the tasks
-            List<Task> tasks = new List<Task>();
-
-            foreach (string cellIp in cellsIp)
-            {
-                // Create a task for each cell IP
-                tasks.Add(CheckCellOnline(cellIp));
-            }
-
-            // Wait for all tasks to complete
-            await Task.WhenAll(tasks);
-            WriteLine("Scanning cells completed.");
-            ScanCells_btn.Enabled = true;
-        }
-
         private async Task CheckCellOnline(string cellIp)
         {
             bool isOnline = false;
@@ -369,11 +286,224 @@ namespace AguilaRemoteControl
                     {
                         cb.Enabled = isOnline;
                         cb.Checked = isOnline;
+                        cb.BackColor = Color.Gray;
                         WriteLine("Cell " + Site[Int32.Parse(cellNum)] + " is OFFLINE, disabling cell");
                     }
-                    
+                    else
+                    {
+                        cb.Enabled = isOnline;
+                        cb.BackColor = gb_cell_selection.BackColor;
+                    }
+
                 }
             });
+        }
+
+        private async void ScanCells_btn_Click(object sender, EventArgs e)
+        {
+            List<string> cellsIp = new List<string>();
+            WriteLine("Scanning cells status...");
+            ScanCells_btn.Enabled = false;
+
+            // Get all cells IP into string list
+            for (int i = 1; i <= 36; i++)
+            {
+                string ip = $"10.250.0.{i}";
+                cellsIp.Add(ip);
+            }
+
+            // Create a list to hold all the tasks
+            List<Task> tasks = new List<Task>();
+
+            foreach (string cellIp in cellsIp)
+            {
+                // Create a task for each cell IP
+                tasks.Add(CheckCellOnline(cellIp));
+            }
+
+            // Wait for all tasks to complete
+            await Task.WhenAll(tasks);
+            WriteLine("Scanning cells completed.");
+            ScanCells_btn.Enabled = true;
+        }
+
+        /////////////////// Button Clicked ///////////////////
+
+
+
+        private Dictionary<string, Color> orgColor = new Dictionary<string, Color>
+        {
+            { "execute_btn", Color.SpringGreen },
+            { "abort_btn", Color.Coral },
+            { "sendInput_btn", Color.SkyBlue },
+        };
+
+        private Process process;
+        private void execute_btn_Click(object sender, EventArgs e)
+        {
+            // Disable the button for prevent multi click
+            execute_btn.Enabled = false;
+            execute_btn.BackColor = Color.Gray;
+            // Enable abort button
+            abort_btn.Enabled = true;
+            abort_btn.BackColor = Color.Coral;
+
+            string selectedCells = string.Join(",", CheckCheckBoxes());
+            string command = run_config_box.Text + " " + selectedCells;
+            
+            // Create a new process start info
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = "/c " + $@"{command}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardInput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+
+            // Start the process using the Process class
+            process = new Process { StartInfo = processStartInfo };
+
+            // Subscribe to the OutputDataReceived event
+            process.OutputDataReceived += (sender1, args) =>
+            {
+                if (!string.IsNullOrEmpty(args.Data))
+                {
+                    // This will be called in real-time when the process writes to its standard output
+                    WriteConsole(args.Data); // Replace with your method to handle the output
+
+                    // Check if the process is waiting for input
+                    string messageLower = args.Data.ToLower();
+                    if (messageLower.Contains("waiting for input"))
+                    {
+                        // Enable the sendInput button on the UI thread
+                        this.Invoke(new Action(() =>
+                        {
+                            sendInput_btn.Enabled = true;
+                            sendInput_btn.BackColor = Color.SkyBlue;
+                            inputBox.Enabled = true;
+                            inputBox.BackColor = rtb_result.BackColor;
+                        }));
+                    }
+                    Console.WriteLine(messageLower + " " + messageLower.Contains("waiting for input"));
+                }
+            };
+
+            // Set EnableRaisingEvents to true to allow the Exited event to be raised
+            process.EnableRaisingEvents = true;
+
+            
+
+            process.Exited += (sender1, args) =>
+            {
+                // Re-enable the button on the UI thread
+                this.Invoke(new Action(() =>
+                {
+                    // Enable execute button
+                    execute_btn.Enabled = true;
+                    execute_btn.BackColor = Color.SpringGreen;
+                    // Disable abort button
+                    abort_btn.Enabled = false;
+                    abort_btn.BackColor = Color.Gray;
+                    process.Close();
+                    process = null;
+                }));
+                //execute_btn.Enabled = true;
+                //process.Dispose();
+            };
+
+            try
+            {
+                // Start the process
+                process.Start();
+                // Begin asynchronous read of the standard output stream
+                process.BeginOutputReadLine();
+                // Begin asynchronous read of the standard error stream (if needed)
+                process.BeginErrorReadLine();
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during process execution
+                WriteConsole($"An error occurred: {ex.Message}");
+                // Enable execute button
+                execute_btn.Enabled = true;
+                execute_btn.BackColor = Color.SpringGreen;
+                // Disable abort button
+                abort_btn.Enabled = false;
+                abort_btn.BackColor = Color.Gray;
+            }
+        }
+
+        private void KillProcessAndChildren(int pid)
+        {
+            // Create an instance of the ManagementObjectSearcher class to find all processes
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher
+                ("Select * From Win32_Process Where ParentProcessID=" + pid);
+            ManagementObjectCollection moc = searcher.Get();
+            foreach (ManagementObject mo in moc)
+            {
+                // Kill the child process
+                KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+            }
+            try
+            {
+                // Kill the main process after the children have been killed
+                Process proc = Process.GetProcessById(pid);
+                if (!proc.HasExited) proc.Kill();
+            }
+            catch (ArgumentException)
+            {
+                // Process already exited.
+            }
+        }
+
+        private void abort_btn_Click(object sender, EventArgs e)
+        {
+            // Close process
+            // If the process is still running after the wait, force it to stop
+            KillProcessAndChildren(process.Id);
+
+            // Restart GUI
+            execute_btn.Enabled = true;
+            execute_btn.BackColor = orgColor["execute_btn"];
+
+            sendInput_btn.Enabled = false;
+            sendInput_btn.BackColor = Color.Gray;
+
+            inputBox.Enabled = false;
+            inputBox.BackColor = Color.Gray;
+
+        }
+
+        private void sendInput_btn_Click(object sender, EventArgs e)
+        {
+            // Check if the process is running and if inputBox has text
+            if (process != null && !process.HasExited && !string.IsNullOrWhiteSpace(inputBox.Text))
+            {
+                // Write the input from inputBox to the process's standard input
+                using (StreamWriter sw = process.StandardInput)
+                {
+                    sw.WriteLine(inputBox.Text);
+                }
+                // Write your input to console
+                WriteConsole("Your input is: " + inputBox.Text);
+
+                // Optionally, clear the inputBox after sending the input
+                inputBox.Clear();
+                // Disable sendInput btn after it's been clicked
+                sendInput_btn.Enabled = false;
+                sendInput_btn.BackColor = Color.Gray;
+                inputBox.Enabled = false;
+                inputBox.BackColor = Color.Gray;
+            }
+            else
+            {
+                // Handle the case where the process is not running or inputBox is empty
+                WriteConsole("Failed to send input, process is not running or input is empty.");
+            }
         }
 
 
