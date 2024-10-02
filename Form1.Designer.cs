@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AguilaRemoteControl));
             this.gb_cell_selection = new System.Windows.Forms.GroupBox();
             this.ScanCells_btn = new System.Windows.Forms.Button();
@@ -76,7 +77,10 @@
             this.cb_1 = new System.Windows.Forms.CheckBox();
             this.tab_result = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.sendInput_btn = new System.Windows.Forms.Button();
             this.rtb_result = new System.Windows.Forms.RichTextBox();
+            this.clear_console = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.inputBox = new System.Windows.Forms.TextBox();
             this.tab_tp_deploy = new System.Windows.Forms.TabPage();
             this.abort_btn = new System.Windows.Forms.Button();
@@ -86,10 +90,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.l_TestProgram = new System.Windows.Forms.Label();
             this.tab_control = new System.Windows.Forms.TabControl();
-            this.sendInput_btn = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.gb_cell_selection.SuspendLayout();
             this.tab_result.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.clear_console.SuspendLayout();
             this.tab_tp_deploy.SuspendLayout();
             this.tab_control.SuspendLayout();
             this.SuspendLayout();
@@ -152,11 +157,12 @@
             // ScanCells_btn
             // 
             this.ScanCells_btn.BackColor = System.Drawing.Color.SkyBlue;
+            this.ScanCells_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ScanCells_btn.Location = new System.Drawing.Point(266, 10);
             this.ScanCells_btn.Name = "ScanCells_btn";
             this.ScanCells_btn.Size = new System.Drawing.Size(134, 32);
             this.ScanCells_btn.TabIndex = 43;
-            this.ScanCells_btn.Text = "Scan cells online";
+            this.ScanCells_btn.Text = "Scan Cells Online";
             this.ScanCells_btn.UseVisualStyleBackColor = false;
             this.ScanCells_btn.Click += new System.EventHandler(this.ScanCells_btn_Click);
             // 
@@ -669,16 +675,43 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Result";
             // 
+            // sendInput_btn
+            // 
+            this.sendInput_btn.BackColor = System.Drawing.Color.SkyBlue;
+            this.sendInput_btn.Location = new System.Drawing.Point(983, 425);
+            this.sendInput_btn.Name = "sendInput_btn";
+            this.sendInput_btn.Size = new System.Drawing.Size(138, 30);
+            this.sendInput_btn.TabIndex = 43;
+            this.sendInput_btn.Text = "Send Input";
+            this.sendInput_btn.UseVisualStyleBackColor = false;
+            this.sendInput_btn.Click += new System.EventHandler(this.sendInput_btn_Click);
+            // 
             // rtb_result
             // 
             this.rtb_result.BackColor = System.Drawing.SystemColors.Info;
+            this.rtb_result.ContextMenuStrip = this.clear_console;
             this.rtb_result.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtb_result.Location = new System.Drawing.Point(9, 12);
             this.rtb_result.Name = "rtb_result";
+            this.rtb_result.ReadOnly = true;
             this.rtb_result.Size = new System.Drawing.Size(1112, 407);
             this.rtb_result.TabIndex = 0;
             this.rtb_result.Text = "";
             this.rtb_result.WordWrap = false;
+            // 
+            // clear_console
+            // 
+            this.clear_console.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.clear_console.Name = "contextMenuStrip1";
+            this.clear_console.Size = new System.Drawing.Size(148, 26);
+            this.clear_console.Tag = "Hello";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(147, 22);
+            this.toolStripMenuItem1.Text = "Clear Console";
             // 
             // inputBox
             // 
@@ -781,22 +814,16 @@
             // 
             this.tab_control.Controls.Add(this.tab_tp_deploy);
             this.tab_control.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tab_control.Location = new System.Drawing.Point(12, 12);
+            this.tab_control.Location = new System.Drawing.Point(12, 8);
             this.tab_control.Name = "tab_control";
             this.tab_control.SelectedIndex = 0;
             this.tab_control.Size = new System.Drawing.Size(629, 251);
             this.tab_control.TabIndex = 1;
             // 
-            // sendInput_btn
+            // contextMenuStrip1
             // 
-            this.sendInput_btn.BackColor = System.Drawing.Color.SkyBlue;
-            this.sendInput_btn.Location = new System.Drawing.Point(983, 425);
-            this.sendInput_btn.Name = "sendInput_btn";
-            this.sendInput_btn.Size = new System.Drawing.Size(138, 30);
-            this.sendInput_btn.TabIndex = 43;
-            this.sendInput_btn.Text = "Send Input";
-            this.sendInput_btn.UseVisualStyleBackColor = false;
-            this.sendInput_btn.Click += new System.EventHandler(this.sendInput_btn_Click);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // AguilaRemoteControl
             // 
@@ -811,12 +838,13 @@
             this.Controls.Add(this.gb_cell_selection);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AguilaRemoteControl";
-            this.Text = "EAGLE v1.0";
+            this.Text = "EAGLE v0.1";
             this.gb_cell_selection.ResumeLayout(false);
             this.gb_cell_selection.PerformLayout();
             this.tab_result.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.clear_console.ResumeLayout(false);
             this.tab_tp_deploy.ResumeLayout(false);
             this.tab_tp_deploy.PerformLayout();
             this.tab_control.ResumeLayout(false);
@@ -884,6 +912,9 @@
         private System.Windows.Forms.Button abort_btn;
         private System.Windows.Forms.TextBox inputBox;
         private System.Windows.Forms.Button sendInput_btn;
+        private System.Windows.Forms.ContextMenuStrip clear_console;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
 

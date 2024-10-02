@@ -12,6 +12,7 @@ using System.Diagnostics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Speech.Synthesis;
 using System.Management;
+using System.Security.AccessControl;
 
 
 namespace AguilaRemoteControl
@@ -339,6 +340,7 @@ namespace AguilaRemoteControl
         };
 
         private Process process;
+        private StreamWriter streamWriter;
         private void execute_btn_Click(object sender, EventArgs e)
         {
             // Disable the button for prevent multi click
@@ -366,6 +368,7 @@ namespace AguilaRemoteControl
 
             // Start the process using the Process class
             process = new Process { StartInfo = processStartInfo };
+            
 
             // Subscribe to the OutputDataReceived event
             process.OutputDataReceived += (sender1, args) =>
@@ -388,7 +391,6 @@ namespace AguilaRemoteControl
                             inputBox.BackColor = rtb_result.BackColor;
                         }));
                     }
-                    Console.WriteLine(messageLower + " " + messageLower.Contains("waiting for input"));
                 }
             };
 
@@ -419,6 +421,7 @@ namespace AguilaRemoteControl
             {
                 // Start the process
                 process.Start();
+                streamWriter = process.StandardInput;
                 // Begin asynchronous read of the standard output stream
                 process.BeginOutputReadLine();
                 // Begin asynchronous read of the standard error stream (if needed)
@@ -483,13 +486,16 @@ namespace AguilaRemoteControl
             // Check if the process is running and if inputBox has text
             if (process != null && !process.HasExited && !string.IsNullOrWhiteSpace(inputBox.Text))
             {
-                // Write the input from inputBox to the process's standard input
-                using (StreamWriter sw = process.StandardInput)
-                {
-                    sw.WriteLine(inputBox.Text);
-                }
-                // Write your input to console
-                WriteConsole("Your input is: " + inputBox.Text);
+                string input = inputBox.Text;
+
+                //// Write the input from inputBox to the process's standard input
+                //using (StreamWriter sw = process.StandardInput)
+                //{
+                //    sw.WriteLine(input);
+                //}
+
+                // Convert the input string to bytes and write to the process's standard input
+                streamWriter.WriteLine(input);
 
                 // Optionally, clear the inputBox after sending the input
                 inputBox.Clear();
@@ -498,12 +504,18 @@ namespace AguilaRemoteControl
                 sendInput_btn.BackColor = Color.Gray;
                 inputBox.Enabled = false;
                 inputBox.BackColor = Color.Gray;
+
             }
             else
             {
                 // Handle the case where the process is not running or inputBox is empty
                 WriteConsole("Failed to send input, process is not running or input is empty.");
             }
+        }
+
+        private void clear_console_Click(object sender, EventArgs e)
+        {
+            rtb_result.Clear();
         }
 
 
