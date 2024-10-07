@@ -17,6 +17,7 @@ using System.Security.AccessControl;
 
 namespace AguilaRemoteControl
 {
+    
     public partial class AguilaRemoteControl : Form
     {
         private Dictionary<int, string> Site = new Dictionary<int, string>
@@ -34,8 +35,6 @@ namespace AguilaRemoteControl
         {
             InitializeComponent();
 
-            WriteConsole($"========== Aguila Remote Control Version 1.0 ==========" + Environment.NewLine);
-
             LoadFeatures();
 
             abort_btn.Enabled = false;
@@ -49,10 +48,12 @@ namespace AguilaRemoteControl
         }
 
         /////////////////// Features ///////////////////
+        public string mode = "production";
         private void LoadFeatures()
         {
             // Add items to feature combo box
-            string featureConfigPath = "FeatureConfig.config";
+            string featureConfigPath = @"C:\Temp\EAGLE\FeatureConfig.config";
+            if (mode == "test") featureConfigPath = @".\FeatureConfig.config";
             // Load the XML document
             XDocument xmlDoc = XDocument.Load(featureConfigPath);
             // Query the document to retrieve the feature elements
@@ -68,6 +69,8 @@ namespace AguilaRemoteControl
             cmds = features.Select(f => f.Cmd).ToArray();
             // Add items from config file to feature combo box
             for (int i = 0; i < names.Length; i++) { comboBoxFeatures.Items.Add(names[i].ToString()); }
+
+            WriteConsole("Welcome to EAGLE, please select feature.");
         }
         private void comboBoxFeatures_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -118,11 +121,20 @@ namespace AguilaRemoteControl
         void WriteLine(string message_child)
         {
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            string messageToWrite = timestamp + ": " + message_child + "\n";
+            string currentFeature = "[EAGLE]: ";
+            if (comboBoxFeatures.InvokeRequired) 
+            {
+                comboBoxFeatures.Invoke(new Action(() =>
+                {
+                    currentFeature = $"[{comboBoxFeatures.Text}]: ";
+                }));
+            }
+            string messageToWrite = timestamp + " " + currentFeature + message_child + "\n";
             // Set color base on string
 
             // Load the color configuration
-            string colorConfigPath = "WriteLineColor.config";
+            string colorConfigPath = @"C:\Temp\EAGLE\LineColor.config";
+            if (mode == "test") colorConfigPath = @".\LineColor.config";
             var colorMappings = LoadColorConfiguration(colorConfigPath);
 
             // Find the color mapping based on the message content
@@ -179,7 +191,7 @@ namespace AguilaRemoteControl
 
         private async Task LogToFile(string message)
         {
-            string logfile = @"D:\Aguila_Setup\EAGLE\eagle_log.txt";
+            string logfile = @"C:\Temp\EAGLE\eagle_console_log.txt";
             //logfile = @"C:\temp\EAGLE\AguilaRemoteControl\bin\Debug\log.txt";
 
             // Ensure the directory exists
@@ -329,7 +341,56 @@ namespace AguilaRemoteControl
         }
 
         /////////////////// Button Clicked ///////////////////
-
+        private void disableElementForExecuting(bool disable)
+        {
+            if (disable)
+            {
+                // Disable the button for prevent multi click
+                execute_btn.Enabled = false;
+                execute_btn.BackColor = Color.Gray;
+                // Disable cells selection
+                for (int i = 1; i <= 36; i++)
+                {
+                    CheckBox cb = this.Controls.Find("cb_" + i, true)[0] as CheckBox;
+                    if (cb != null)
+                    {
+                        cb.Enabled = false;
+                    }
+                }
+                // Disable choose feature and run config
+                comboBoxFeatures.Enabled = false;
+                run_config_box.Enabled = false;
+                // Enable abort button
+                abort_btn.Enabled = true;
+                abort_btn.BackColor = Color.Coral;
+            }
+            else
+            {
+                // Enable the button for prevent multi click
+                execute_btn.Enabled = true;
+                execute_btn.BackColor = Color.SpringGreen;
+                // Enable cells selection
+                for (int i = 1; i <= 36; i++)
+                {
+                    CheckBox cb = this.Controls.Find("cb_" + i, true)[0] as CheckBox;
+                    if (cb != null)
+                    {
+                        cb.Enabled = true;
+                    }
+                }
+                // Enable choose feature and run config
+                comboBoxFeatures.Enabled = true;
+                run_config_box.Enabled = true;
+                // Disable abort button
+                abort_btn.Enabled = false;
+                abort_btn.BackColor = Color.Gray;
+                // Disable input fields
+                inputBox.Enabled = false;
+                inputBox.BackColor = Color.Gray;
+                sendInput_btn.Enabled = false;
+                sendInput_btn.BackColor = Color.Gray;
+            }
+        }
 
 
         private Dictionary<string, Color> orgColor = new Dictionary<string, Color>
@@ -343,12 +404,7 @@ namespace AguilaRemoteControl
         private StreamWriter streamWriter;
         private void execute_btn_Click(object sender, EventArgs e)
         {
-            // Disable the button for prevent multi click
-            execute_btn.Enabled = false;
-            execute_btn.BackColor = Color.Gray;
-            // Enable abort button
-            abort_btn.Enabled = true;
-            abort_btn.BackColor = Color.Coral;
+            disableElementForExecuting(true);
 
             string selectedCells = string.Join(",", CheckCheckBoxes());
             string command = run_config_box.Text + " " + selectedCells;
@@ -397,21 +453,14 @@ namespace AguilaRemoteControl
             // Set EnableRaisingEvents to true to allow the Exited event to be raised
             process.EnableRaisingEvents = true;
 
-            
+     
 
             process.Exited += (sender1, args) =>
             {
                 // Re-enable the button on the UI thread
                 this.Invoke(new Action(() =>
                 {
-                    // Enable execute button
-                    execute_btn.Enabled = true;
-                    execute_btn.BackColor = Color.SpringGreen;
-                    // Disable abort button
-                    abort_btn.Enabled = false;
-                    abort_btn.BackColor = Color.Gray;
-                    process.Close();
-                    process = null;
+                    disableElementForExecuting(false);
                 }));
                 //execute_btn.Enabled = true;
                 //process.Dispose();
@@ -426,6 +475,7 @@ namespace AguilaRemoteControl
                 process.BeginOutputReadLine();
                 // Begin asynchronous read of the standard error stream (if needed)
                 process.BeginErrorReadLine();
+                WriteConsole("Executing feature on cells [" + selectedCells + "]");
             }
             catch (Exception ex)
             {
@@ -455,7 +505,12 @@ namespace AguilaRemoteControl
             {
                 // Kill the main process after the children have been killed
                 Process proc = Process.GetProcessById(pid);
-                if (!proc.HasExited) proc.Kill();
+                if (!proc.HasExited)
+                {
+                    proc.Kill();
+                    proc.WaitForExit(); // Wait for the process to exit
+                    WriteLine($"Process {pid} has been killed.");
+                }
             }
             catch (ArgumentException)
             {
@@ -468,16 +523,9 @@ namespace AguilaRemoteControl
             // Close process
             // If the process is still running after the wait, force it to stop
             KillProcessAndChildren(process.Id);
-
+            WriteConsole("Feature aborted!");
             // Restart GUI
-            execute_btn.Enabled = true;
-            execute_btn.BackColor = orgColor["execute_btn"];
-
-            sendInput_btn.Enabled = false;
-            sendInput_btn.BackColor = Color.Gray;
-
-            inputBox.Enabled = false;
-            inputBox.BackColor = Color.Gray;
+            disableElementForExecuting(false);
 
         }
 

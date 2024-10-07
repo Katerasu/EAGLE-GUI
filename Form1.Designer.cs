@@ -706,6 +706,7 @@
             this.clear_console.Name = "contextMenuStrip1";
             this.clear_console.Size = new System.Drawing.Size(148, 26);
             this.clear_console.Tag = "Hello";
+            this.clear_console.Click += new System.EventHandler(this.clear_console_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -838,7 +839,7 @@
             this.Controls.Add(this.gb_cell_selection);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AguilaRemoteControl";
-            this.Text = "EAGLE v0.1";
+            this.Text = "EAGLE v0.2";
             this.gb_cell_selection.ResumeLayout(false);
             this.gb_cell_selection.PerformLayout();
             this.tab_result.ResumeLayout(false);
