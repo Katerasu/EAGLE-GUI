@@ -778,7 +778,6 @@
             this.run_config_box.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.run_config_box.Size = new System.Drawing.Size(601, 95);
             this.run_config_box.TabIndex = 50;
-            this.run_config_box.WordWrap = false;
             // 
             // execute_btn
             // 
@@ -839,7 +838,7 @@
             this.Controls.Add(this.gb_cell_selection);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AguilaRemoteControl";
-            this.Text = "EAGLE v0.2";
+            this.Text = "EAGLE v0.2 (ARL super vip)";
             this.gb_cell_selection.ResumeLayout(false);
             this.gb_cell_selection.PerformLayout();
             this.tab_result.ResumeLayout(false);

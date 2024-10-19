@@ -48,7 +48,7 @@ namespace AguilaRemoteControl
         }
 
         /////////////////// Features ///////////////////
-        public string mode = "production";
+        public string mode = "test";
         private void LoadFeatures()
         {
             // Add items to feature combo box
