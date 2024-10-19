@@ -13,6 +13,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Speech.Synthesis;
 using System.Management;
 using System.Security.AccessControl;
+using System.Management.Instrumentation;
 
 
 namespace AguilaRemoteControl
@@ -20,7 +21,7 @@ namespace AguilaRemoteControl
     
     public partial class AguilaRemoteControl : Form
     {
-        private Dictionary<int, string> Site = new Dictionary<int, string>
+        private Dictionary<int, string> SiteDict = new Dictionary<int, string>
         {
             {1, "A101"},    {7, "B101"},    {13, "C101"},    {19, "D101"},    {25, "E101"},    {31, "F101"},
             {2, "A201"},    {8, "B201"},    {14, "C201"},    {20, "D201"},    {26, "E201"},    {32, "F201"},
@@ -30,7 +31,6 @@ namespace AguilaRemoteControl
             {6, "A601"},    {12, "B601"},    {18, "C601"},    {24, "D601"},    {30, "E601"},    {36, "F601"}
         };
 
-        public string[] cmds, names;
         public AguilaRemoteControl()
         {
             InitializeComponent();
@@ -45,10 +45,13 @@ namespace AguilaRemoteControl
 
             inputBox.Enabled = false;
             inputBox.BackColor = Color.Gray;
+
+            run_config_box.ReadOnly = true;
         }
 
         /////////////////// Features ///////////////////
-        public string mode = "test";
+        public string mode = "production";
+        public string[] cmds, names, notes;
         private void LoadFeatures()
         {
             // Add items to feature combo box
@@ -61,20 +64,26 @@ namespace AguilaRemoteControl
                                  .Select(f => new
                                  {
                                      Name = f.Attribute("name").Value,
-                                     Cmd = f.Attribute("cmd").Value
+                                     Cmd = f.Attribute("cmd").Value,
+                                     Note = f.Attribute("note").Value
                                  })
                                  .ToList();
             // Convert the results to arrays
             names = features.Select(f => f.Name).ToArray();
             cmds = features.Select(f => f.Cmd).ToArray();
+            notes = features.Select(f => f.Note).ToArray();
             // Add items from config file to feature combo box
             for (int i = 0; i < names.Length; i++) { comboBoxFeatures.Items.Add(names[i].ToString()); }
 
             WriteConsole("Welcome to EAGLE, please select feature.");
         }
+        public string featureCommand = "";
+        public string featureName = "";
         private void comboBoxFeatures_SelectedIndexChanged(object sender, EventArgs e)
         {
-            run_config_box.Text = cmds[Array.IndexOf(names, comboBoxFeatures.Text)];
+            run_config_box.Text = notes[Array.IndexOf(names, comboBoxFeatures.Text)];
+            featureCommand = cmds[Array.IndexOf(names, comboBoxFeatures.Text)];
+            featureName = names[Array.IndexOf(names, comboBoxFeatures.Text)];
         }
 
         /////////////////// Write Text To Rich Text Box ///////////////////
@@ -209,9 +218,10 @@ namespace AguilaRemoteControl
         }
 
         /////////////////// Cells Check Box ///////////////////
-        public List<string> CheckCheckBoxes()
+        public Tuple<List<string>, List<string>> CheckCheckBoxes()
         {
             List<string> selectedIps = new List<string>();
+            List<string> selectedCells = new List<string>();
             for (int i = 1; i <= 36; i++)
             {
                 CheckBox cb = this.Controls.Find("cb_" + i, true)[0] as CheckBox;
@@ -219,10 +229,11 @@ namespace AguilaRemoteControl
                 {
                     string ip = $"10.250.0.{i}";
                     selectedIps.Add(ip);
+                    selectedCells.Add(SiteDict[i]);
                 }
 
             }
-            return selectedIps;
+            return Tuple.Create(selectedIps, selectedCells);
         }
 
         private void SetCheckBoxesCheckedState(IEnumerable<CheckBox> checkBoxes, bool checkedState)
@@ -300,7 +311,7 @@ namespace AguilaRemoteControl
                         cb.Enabled = isOnline;
                         cb.Checked = isOnline;
                         cb.BackColor = Color.Gray;
-                        WriteLine("Cell " + Site[Int32.Parse(cellNum)] + " is OFFLINE, disabling cell");
+                        WriteLine("Cell " + SiteDict[Int32.Parse(cellNum)] + " is OFFLINE, disabling cell");
                     }
                     else
                     {
@@ -359,7 +370,7 @@ namespace AguilaRemoteControl
                 }
                 // Disable choose feature and run config
                 comboBoxFeatures.Enabled = false;
-                run_config_box.Enabled = false;
+                //run_config_box.Enabled = false;
                 // Enable abort button
                 abort_btn.Enabled = true;
                 abort_btn.BackColor = Color.Coral;
@@ -380,7 +391,7 @@ namespace AguilaRemoteControl
                 }
                 // Enable choose feature and run config
                 comboBoxFeatures.Enabled = true;
-                run_config_box.Enabled = true;
+                //run_config_box.Enabled = true;
                 // Disable abort button
                 abort_btn.Enabled = false;
                 abort_btn.BackColor = Color.Gray;
@@ -406,8 +417,10 @@ namespace AguilaRemoteControl
         {
             disableElementForExecuting(true);
 
-            string selectedCells = string.Join(",", CheckCheckBoxes());
-            string command = run_config_box.Text + " " + selectedCells;
+            var result = CheckCheckBoxes();
+            List<string> selectedIpsList = result.Item1;
+            string selectedIps = string.Join(",", selectedIpsList);
+            string command = featureCommand + " " + selectedIps;
             
             // Create a new process start info
             ProcessStartInfo processStartInfo = new ProcessStartInfo
@@ -475,7 +488,10 @@ namespace AguilaRemoteControl
                 process.BeginOutputReadLine();
                 // Begin asynchronous read of the standard error stream (if needed)
                 process.BeginErrorReadLine();
-                WriteConsole("Executing feature on cells [" + selectedCells + "]");
+                // Print out executing cells to console
+                List<string> selectedCellsList = result.Item2;
+                string selectedCells = string.Join(",", selectedCellsList);
+                WriteConsole($@"Starting feature '{featureName}' on {selectedCellsList.Count} cells '{selectedCells}'");
             }
             catch (Exception ex)
             {
@@ -527,6 +543,24 @@ namespace AguilaRemoteControl
             // Restart GUI
             disableElementForExecuting(false);
 
+        }
+
+        private void open_guide_btn_Click(object sender, EventArgs e)
+        {   try
+            {
+                string src = @"\\ssfile1\SPE_Shared\EAGLE\UserGuide\EAGLE_UserGuide_VN.pdf";
+                string des = @"C:\Temp\EAGLE\EAGLE_UserGuide_VN.pdf";
+
+                if (mode == "test") src = @"EAGLE_UserGuide_VN.pdf";
+
+                File.Copy(src, des, true);
+
+                Process.Start(new ProcessStartInfo(des) { UseShellExecute = true });
+            } 
+            catch
+            {
+                WriteLine("Failed to download and open LATEST guide PDF file, close all PDF files and try again");
+            }
         }
 
         private void sendInput_btn_Click(object sender, EventArgs e)

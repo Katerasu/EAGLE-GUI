@@ -82,21 +82,25 @@
             this.clear_console = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.inputBox = new System.Windows.Forms.TextBox();
-            this.tab_tp_deploy = new System.Windows.Forms.TabPage();
+            this.tab_features = new System.Windows.Forms.TabPage();
             this.abort_btn = new System.Windows.Forms.Button();
             this.comboBoxFeatures = new System.Windows.Forms.ComboBox();
             this.run_config_box = new System.Windows.Forms.TextBox();
             this.execute_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.l_TestProgram = new System.Windows.Forms.Label();
-            this.tab_control = new System.Windows.Forms.TabControl();
+            this.tabs = new System.Windows.Forms.TabControl();
+            this.tab_about = new System.Windows.Forms.TabPage();
+            this.open_guide_btn = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.gb_cell_selection.SuspendLayout();
             this.tab_result.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.clear_console.SuspendLayout();
-            this.tab_tp_deploy.SuspendLayout();
-            this.tab_control.SuspendLayout();
+            this.tab_features.SuspendLayout();
+            this.tabs.SuspendLayout();
+            this.tab_about.SuspendLayout();
             this.SuspendLayout();
             // 
             // gb_cell_selection
@@ -147,9 +151,9 @@
             this.gb_cell_selection.Controls.Add(this.cb_2);
             this.gb_cell_selection.Controls.Add(this.cb_1);
             this.gb_cell_selection.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gb_cell_selection.Location = new System.Drawing.Point(647, 12);
+            this.gb_cell_selection.Location = new System.Drawing.Point(16, 16);
             this.gb_cell_selection.Name = "gb_cell_selection";
-            this.gb_cell_selection.Size = new System.Drawing.Size(510, 247);
+            this.gb_cell_selection.Size = new System.Drawing.Size(610, 247);
             this.gb_cell_selection.TabIndex = 0;
             this.gb_cell_selection.TabStop = false;
             this.gb_cell_selection.Text = "Cell Selection";
@@ -157,22 +161,23 @@
             // ScanCells_btn
             // 
             this.ScanCells_btn.BackColor = System.Drawing.Color.SkyBlue;
-            this.ScanCells_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ScanCells_btn.Location = new System.Drawing.Point(266, 10);
+            this.ScanCells_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ScanCells_btn.Location = new System.Drawing.Point(434, 9);
             this.ScanCells_btn.Name = "ScanCells_btn";
-            this.ScanCells_btn.Size = new System.Drawing.Size(134, 32);
+            this.ScanCells_btn.Size = new System.Drawing.Size(160, 32);
             this.ScanCells_btn.TabIndex = 43;
-            this.ScanCells_btn.Text = "Scan Cells Online";
+            this.ScanCells_btn.Text = "Scan Online Cells";
             this.ScanCells_btn.UseVisualStyleBackColor = false;
             this.ScanCells_btn.Click += new System.EventHandler(this.ScanCells_btn_Click);
             // 
             // cb_select_all
             // 
             this.cb_select_all.AutoSize = true;
-            this.cb_select_all.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_select_all.Location = new System.Drawing.Point(126, 17);
+            this.cb_select_all.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_select_all.ForeColor = System.Drawing.Color.Navy;
+            this.cb_select_all.Location = new System.Drawing.Point(249, 12);
             this.cb_select_all.Name = "cb_select_all";
-            this.cb_select_all.Size = new System.Drawing.Size(91, 20);
+            this.cb_select_all.Size = new System.Drawing.Size(114, 28);
             this.cb_select_all.TabIndex = 41;
             this.cb_select_all.Text = "Select all";
             this.cb_select_all.UseVisualStyleBackColor = true;
@@ -183,7 +188,7 @@
             this.cb_col_F.AutoSize = true;
             this.cb_col_F.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_col_F.ForeColor = System.Drawing.Color.Navy;
-            this.cb_col_F.Location = new System.Drawing.Point(418, 53);
+            this.cb_col_F.Location = new System.Drawing.Point(526, 46);
             this.cb_col_F.Name = "cb_col_F";
             this.cb_col_F.Size = new System.Drawing.Size(62, 20);
             this.cb_col_F.TabIndex = 40;
@@ -195,7 +200,7 @@
             // 
             this.cb_36.AutoSize = true;
             this.cb_36.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_36.Location = new System.Drawing.Point(418, 216);
+            this.cb_36.Location = new System.Drawing.Point(526, 209);
             this.cb_36.Name = "cb_36";
             this.cb_36.Size = new System.Drawing.Size(72, 20);
             this.cb_36.TabIndex = 39;
@@ -206,7 +211,7 @@
             // 
             this.cb_35.AutoSize = true;
             this.cb_35.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_35.Location = new System.Drawing.Point(418, 190);
+            this.cb_35.Location = new System.Drawing.Point(526, 183);
             this.cb_35.Name = "cb_35";
             this.cb_35.Size = new System.Drawing.Size(72, 20);
             this.cb_35.TabIndex = 38;
@@ -217,7 +222,7 @@
             // 
             this.cb_34.AutoSize = true;
             this.cb_34.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_34.Location = new System.Drawing.Point(418, 164);
+            this.cb_34.Location = new System.Drawing.Point(526, 157);
             this.cb_34.Name = "cb_34";
             this.cb_34.Size = new System.Drawing.Size(72, 20);
             this.cb_34.TabIndex = 37;
@@ -228,7 +233,7 @@
             // 
             this.cb_33.AutoSize = true;
             this.cb_33.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_33.Location = new System.Drawing.Point(418, 138);
+            this.cb_33.Location = new System.Drawing.Point(526, 131);
             this.cb_33.Name = "cb_33";
             this.cb_33.Size = new System.Drawing.Size(72, 20);
             this.cb_33.TabIndex = 36;
@@ -239,7 +244,7 @@
             // 
             this.cb_32.AutoSize = true;
             this.cb_32.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_32.Location = new System.Drawing.Point(418, 112);
+            this.cb_32.Location = new System.Drawing.Point(526, 105);
             this.cb_32.Name = "cb_32";
             this.cb_32.Size = new System.Drawing.Size(72, 20);
             this.cb_32.TabIndex = 35;
@@ -250,7 +255,7 @@
             // 
             this.cb_31.AutoSize = true;
             this.cb_31.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_31.Location = new System.Drawing.Point(418, 86);
+            this.cb_31.Location = new System.Drawing.Point(526, 79);
             this.cb_31.Name = "cb_31";
             this.cb_31.Size = new System.Drawing.Size(72, 20);
             this.cb_31.TabIndex = 34;
@@ -262,7 +267,7 @@
             this.cb_col_E.AutoSize = true;
             this.cb_col_E.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_col_E.ForeColor = System.Drawing.Color.Navy;
-            this.cb_col_E.Location = new System.Drawing.Point(337, 53);
+            this.cb_col_E.Location = new System.Drawing.Point(428, 46);
             this.cb_col_E.Name = "cb_col_E";
             this.cb_col_E.Size = new System.Drawing.Size(63, 20);
             this.cb_col_E.TabIndex = 33;
@@ -274,7 +279,7 @@
             // 
             this.cb_30.AutoSize = true;
             this.cb_30.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_30.Location = new System.Drawing.Point(337, 216);
+            this.cb_30.Location = new System.Drawing.Point(428, 209);
             this.cb_30.Name = "cb_30";
             this.cb_30.Size = new System.Drawing.Size(73, 20);
             this.cb_30.TabIndex = 32;
@@ -285,7 +290,7 @@
             // 
             this.cb_29.AutoSize = true;
             this.cb_29.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_29.Location = new System.Drawing.Point(337, 190);
+            this.cb_29.Location = new System.Drawing.Point(428, 183);
             this.cb_29.Name = "cb_29";
             this.cb_29.Size = new System.Drawing.Size(73, 20);
             this.cb_29.TabIndex = 31;
@@ -296,7 +301,7 @@
             // 
             this.cb_28.AutoSize = true;
             this.cb_28.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_28.Location = new System.Drawing.Point(337, 164);
+            this.cb_28.Location = new System.Drawing.Point(428, 157);
             this.cb_28.Name = "cb_28";
             this.cb_28.Size = new System.Drawing.Size(73, 20);
             this.cb_28.TabIndex = 30;
@@ -307,7 +312,7 @@
             // 
             this.cb_27.AutoSize = true;
             this.cb_27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_27.Location = new System.Drawing.Point(337, 138);
+            this.cb_27.Location = new System.Drawing.Point(428, 131);
             this.cb_27.Name = "cb_27";
             this.cb_27.Size = new System.Drawing.Size(73, 20);
             this.cb_27.TabIndex = 29;
@@ -318,7 +323,7 @@
             // 
             this.cb_26.AutoSize = true;
             this.cb_26.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_26.Location = new System.Drawing.Point(337, 112);
+            this.cb_26.Location = new System.Drawing.Point(428, 105);
             this.cb_26.Name = "cb_26";
             this.cb_26.Size = new System.Drawing.Size(73, 20);
             this.cb_26.TabIndex = 28;
@@ -329,7 +334,7 @@
             // 
             this.cb_25.AutoSize = true;
             this.cb_25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_25.Location = new System.Drawing.Point(337, 86);
+            this.cb_25.Location = new System.Drawing.Point(428, 79);
             this.cb_25.Name = "cb_25";
             this.cb_25.Size = new System.Drawing.Size(73, 20);
             this.cb_25.TabIndex = 27;
@@ -341,7 +346,7 @@
             this.cb_col_D.AutoSize = true;
             this.cb_col_D.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_col_D.ForeColor = System.Drawing.Color.Navy;
-            this.cb_col_D.Location = new System.Drawing.Point(257, 53);
+            this.cb_col_D.Location = new System.Drawing.Point(328, 46);
             this.cb_col_D.Name = "cb_col_D";
             this.cb_col_D.Size = new System.Drawing.Size(64, 20);
             this.cb_col_D.TabIndex = 26;
@@ -353,7 +358,7 @@
             // 
             this.cb_24.AutoSize = true;
             this.cb_24.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_24.Location = new System.Drawing.Point(257, 216);
+            this.cb_24.Location = new System.Drawing.Point(328, 209);
             this.cb_24.Name = "cb_24";
             this.cb_24.Size = new System.Drawing.Size(74, 20);
             this.cb_24.TabIndex = 25;
@@ -364,7 +369,7 @@
             // 
             this.cb_23.AutoSize = true;
             this.cb_23.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_23.Location = new System.Drawing.Point(257, 190);
+            this.cb_23.Location = new System.Drawing.Point(328, 183);
             this.cb_23.Name = "cb_23";
             this.cb_23.Size = new System.Drawing.Size(74, 20);
             this.cb_23.TabIndex = 24;
@@ -375,7 +380,7 @@
             // 
             this.cb_22.AutoSize = true;
             this.cb_22.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_22.Location = new System.Drawing.Point(257, 164);
+            this.cb_22.Location = new System.Drawing.Point(328, 157);
             this.cb_22.Name = "cb_22";
             this.cb_22.Size = new System.Drawing.Size(74, 20);
             this.cb_22.TabIndex = 23;
@@ -386,7 +391,7 @@
             // 
             this.cb_21.AutoSize = true;
             this.cb_21.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_21.Location = new System.Drawing.Point(257, 138);
+            this.cb_21.Location = new System.Drawing.Point(328, 131);
             this.cb_21.Name = "cb_21";
             this.cb_21.Size = new System.Drawing.Size(74, 20);
             this.cb_21.TabIndex = 22;
@@ -397,7 +402,7 @@
             // 
             this.cb_20.AutoSize = true;
             this.cb_20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_20.Location = new System.Drawing.Point(257, 112);
+            this.cb_20.Location = new System.Drawing.Point(328, 105);
             this.cb_20.Name = "cb_20";
             this.cb_20.Size = new System.Drawing.Size(74, 20);
             this.cb_20.TabIndex = 21;
@@ -408,7 +413,7 @@
             // 
             this.cb_19.AutoSize = true;
             this.cb_19.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_19.Location = new System.Drawing.Point(257, 86);
+            this.cb_19.Location = new System.Drawing.Point(328, 79);
             this.cb_19.Name = "cb_19";
             this.cb_19.Size = new System.Drawing.Size(74, 20);
             this.cb_19.TabIndex = 20;
@@ -420,7 +425,7 @@
             this.cb_col_C.AutoSize = true;
             this.cb_col_C.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_col_C.ForeColor = System.Drawing.Color.Navy;
-            this.cb_col_C.Location = new System.Drawing.Point(177, 53);
+            this.cb_col_C.Location = new System.Drawing.Point(222, 46);
             this.cb_col_C.Name = "cb_col_C";
             this.cb_col_C.Size = new System.Drawing.Size(63, 20);
             this.cb_col_C.TabIndex = 19;
@@ -432,7 +437,7 @@
             // 
             this.cb_18.AutoSize = true;
             this.cb_18.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_18.Location = new System.Drawing.Point(177, 216);
+            this.cb_18.Location = new System.Drawing.Point(222, 209);
             this.cb_18.Name = "cb_18";
             this.cb_18.Size = new System.Drawing.Size(73, 20);
             this.cb_18.TabIndex = 18;
@@ -443,7 +448,7 @@
             // 
             this.cb_17.AutoSize = true;
             this.cb_17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_17.Location = new System.Drawing.Point(177, 190);
+            this.cb_17.Location = new System.Drawing.Point(222, 183);
             this.cb_17.Name = "cb_17";
             this.cb_17.Size = new System.Drawing.Size(73, 20);
             this.cb_17.TabIndex = 17;
@@ -454,7 +459,7 @@
             // 
             this.cb_16.AutoSize = true;
             this.cb_16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_16.Location = new System.Drawing.Point(177, 164);
+            this.cb_16.Location = new System.Drawing.Point(222, 157);
             this.cb_16.Name = "cb_16";
             this.cb_16.Size = new System.Drawing.Size(73, 20);
             this.cb_16.TabIndex = 16;
@@ -465,7 +470,7 @@
             // 
             this.cb_15.AutoSize = true;
             this.cb_15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_15.Location = new System.Drawing.Point(177, 138);
+            this.cb_15.Location = new System.Drawing.Point(222, 131);
             this.cb_15.Name = "cb_15";
             this.cb_15.Size = new System.Drawing.Size(73, 20);
             this.cb_15.TabIndex = 15;
@@ -476,7 +481,7 @@
             // 
             this.cb_14.AutoSize = true;
             this.cb_14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_14.Location = new System.Drawing.Point(177, 112);
+            this.cb_14.Location = new System.Drawing.Point(222, 105);
             this.cb_14.Name = "cb_14";
             this.cb_14.Size = new System.Drawing.Size(73, 20);
             this.cb_14.TabIndex = 14;
@@ -487,7 +492,7 @@
             // 
             this.cb_13.AutoSize = true;
             this.cb_13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_13.Location = new System.Drawing.Point(177, 86);
+            this.cb_13.Location = new System.Drawing.Point(222, 79);
             this.cb_13.Name = "cb_13";
             this.cb_13.Size = new System.Drawing.Size(73, 20);
             this.cb_13.TabIndex = 13;
@@ -499,7 +504,7 @@
             this.cb_col_B.AutoSize = true;
             this.cb_col_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_col_B.ForeColor = System.Drawing.Color.Navy;
-            this.cb_col_B.Location = new System.Drawing.Point(98, 53);
+            this.cb_col_B.Location = new System.Drawing.Point(120, 46);
             this.cb_col_B.Name = "cb_col_B";
             this.cb_col_B.Size = new System.Drawing.Size(63, 20);
             this.cb_col_B.TabIndex = 12;
@@ -512,7 +517,7 @@
             this.cb_col_A.AutoSize = true;
             this.cb_col_A.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_col_A.ForeColor = System.Drawing.Color.Navy;
-            this.cb_col_A.Location = new System.Drawing.Point(26, 53);
+            this.cb_col_A.Location = new System.Drawing.Point(20, 46);
             this.cb_col_A.Name = "cb_col_A";
             this.cb_col_A.Size = new System.Drawing.Size(63, 20);
             this.cb_col_A.TabIndex = 12;
@@ -524,7 +529,7 @@
             // 
             this.cb_12.AutoSize = true;
             this.cb_12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_12.Location = new System.Drawing.Point(98, 216);
+            this.cb_12.Location = new System.Drawing.Point(120, 209);
             this.cb_12.Name = "cb_12";
             this.cb_12.Size = new System.Drawing.Size(73, 20);
             this.cb_12.TabIndex = 11;
@@ -535,7 +540,7 @@
             // 
             this.cb_11.AutoSize = true;
             this.cb_11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_11.Location = new System.Drawing.Point(98, 190);
+            this.cb_11.Location = new System.Drawing.Point(120, 183);
             this.cb_11.Name = "cb_11";
             this.cb_11.Size = new System.Drawing.Size(73, 20);
             this.cb_11.TabIndex = 10;
@@ -546,7 +551,7 @@
             // 
             this.cb_10.AutoSize = true;
             this.cb_10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_10.Location = new System.Drawing.Point(98, 164);
+            this.cb_10.Location = new System.Drawing.Point(120, 157);
             this.cb_10.Name = "cb_10";
             this.cb_10.Size = new System.Drawing.Size(73, 20);
             this.cb_10.TabIndex = 9;
@@ -557,7 +562,7 @@
             // 
             this.cb_9.AutoSize = true;
             this.cb_9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_9.Location = new System.Drawing.Point(98, 138);
+            this.cb_9.Location = new System.Drawing.Point(120, 131);
             this.cb_9.Name = "cb_9";
             this.cb_9.Size = new System.Drawing.Size(69, 20);
             this.cb_9.TabIndex = 8;
@@ -568,7 +573,7 @@
             // 
             this.cb_8.AutoSize = true;
             this.cb_8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_8.Location = new System.Drawing.Point(98, 112);
+            this.cb_8.Location = new System.Drawing.Point(120, 105);
             this.cb_8.Name = "cb_8";
             this.cb_8.Size = new System.Drawing.Size(69, 20);
             this.cb_8.TabIndex = 7;
@@ -579,7 +584,7 @@
             // 
             this.cb_7.AutoSize = true;
             this.cb_7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_7.Location = new System.Drawing.Point(98, 86);
+            this.cb_7.Location = new System.Drawing.Point(120, 79);
             this.cb_7.Name = "cb_7";
             this.cb_7.Size = new System.Drawing.Size(69, 20);
             this.cb_7.TabIndex = 6;
@@ -590,7 +595,7 @@
             // 
             this.cb_6.AutoSize = true;
             this.cb_6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_6.Location = new System.Drawing.Point(26, 216);
+            this.cb_6.Location = new System.Drawing.Point(20, 209);
             this.cb_6.Name = "cb_6";
             this.cb_6.Size = new System.Drawing.Size(66, 20);
             this.cb_6.TabIndex = 5;
@@ -601,7 +606,7 @@
             // 
             this.cb_5.AutoSize = true;
             this.cb_5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_5.Location = new System.Drawing.Point(26, 190);
+            this.cb_5.Location = new System.Drawing.Point(20, 183);
             this.cb_5.Name = "cb_5";
             this.cb_5.Size = new System.Drawing.Size(66, 20);
             this.cb_5.TabIndex = 4;
@@ -612,7 +617,7 @@
             // 
             this.cb_4.AutoSize = true;
             this.cb_4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_4.Location = new System.Drawing.Point(26, 164);
+            this.cb_4.Location = new System.Drawing.Point(20, 157);
             this.cb_4.Name = "cb_4";
             this.cb_4.Size = new System.Drawing.Size(66, 20);
             this.cb_4.TabIndex = 3;
@@ -623,7 +628,7 @@
             // 
             this.cb_3.AutoSize = true;
             this.cb_3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_3.Location = new System.Drawing.Point(26, 138);
+            this.cb_3.Location = new System.Drawing.Point(20, 131);
             this.cb_3.Name = "cb_3";
             this.cb_3.Size = new System.Drawing.Size(66, 20);
             this.cb_3.TabIndex = 2;
@@ -634,7 +639,7 @@
             // 
             this.cb_2.AutoSize = true;
             this.cb_2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_2.Location = new System.Drawing.Point(26, 112);
+            this.cb_2.Location = new System.Drawing.Point(20, 105);
             this.cb_2.Name = "cb_2";
             this.cb_2.Size = new System.Drawing.Size(66, 20);
             this.cb_2.TabIndex = 1;
@@ -645,7 +650,7 @@
             // 
             this.cb_1.AutoSize = true;
             this.cb_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_1.Location = new System.Drawing.Point(26, 86);
+            this.cb_1.Location = new System.Drawing.Point(20, 79);
             this.cb_1.Name = "cb_1";
             this.cb_1.Size = new System.Drawing.Size(66, 20);
             this.cb_1.TabIndex = 0;
@@ -728,28 +733,29 @@
             this.inputBox.TabIndex = 50;
             this.inputBox.WordWrap = false;
             // 
-            // tab_tp_deploy
+            // tab_features
             // 
-            this.tab_tp_deploy.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.tab_tp_deploy.Controls.Add(this.abort_btn);
-            this.tab_tp_deploy.Controls.Add(this.comboBoxFeatures);
-            this.tab_tp_deploy.Controls.Add(this.run_config_box);
-            this.tab_tp_deploy.Controls.Add(this.execute_btn);
-            this.tab_tp_deploy.Controls.Add(this.label1);
-            this.tab_tp_deploy.Controls.Add(this.l_TestProgram);
-            this.tab_tp_deploy.Location = new System.Drawing.Point(4, 25);
-            this.tab_tp_deploy.Name = "tab_tp_deploy";
-            this.tab_tp_deploy.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_tp_deploy.Size = new System.Drawing.Size(621, 222);
-            this.tab_tp_deploy.TabIndex = 0;
-            this.tab_tp_deploy.Text = "Features";
+            this.tab_features.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.tab_features.Controls.Add(this.abort_btn);
+            this.tab_features.Controls.Add(this.comboBoxFeatures);
+            this.tab_features.Controls.Add(this.run_config_box);
+            this.tab_features.Controls.Add(this.execute_btn);
+            this.tab_features.Controls.Add(this.label1);
+            this.tab_features.Controls.Add(this.l_TestProgram);
+            this.tab_features.Location = new System.Drawing.Point(4, 25);
+            this.tab_features.Name = "tab_features";
+            this.tab_features.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_features.Size = new System.Drawing.Size(525, 222);
+            this.tab_features.TabIndex = 0;
+            this.tab_features.Text = "Features";
             // 
             // abort_btn
             // 
             this.abort_btn.BackColor = System.Drawing.Color.Coral;
-            this.abort_btn.Location = new System.Drawing.Point(322, 179);
+            this.abort_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.abort_btn.Location = new System.Drawing.Point(265, 141);
             this.abort_btn.Name = "abort_btn";
-            this.abort_btn.Size = new System.Drawing.Size(289, 32);
+            this.abort_btn.Size = new System.Drawing.Size(250, 70);
             this.abort_btn.TabIndex = 52;
             this.abort_btn.Text = "Abort";
             this.abort_btn.UseVisualStyleBackColor = false;
@@ -761,32 +767,34 @@
             this.comboBoxFeatures.FormattingEnabled = true;
             this.comboBoxFeatures.Location = new System.Drawing.Point(10, 26);
             this.comboBoxFeatures.Name = "comboBoxFeatures";
-            this.comboBoxFeatures.Size = new System.Drawing.Size(601, 24);
+            this.comboBoxFeatures.Size = new System.Drawing.Size(505, 24);
             this.comboBoxFeatures.TabIndex = 51;
             this.comboBoxFeatures.SelectedIndexChanged += new System.EventHandler(this.comboBoxFeatures_SelectedIndexChanged);
             // 
             // run_config_box
             // 
-            this.run_config_box.BackColor = System.Drawing.SystemColors.Info;
+            this.run_config_box.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.run_config_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.run_config_box.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.run_config_box.Font = new System.Drawing.Font("Calibri", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.run_config_box.ForeColor = System.Drawing.Color.Red;
             this.run_config_box.Location = new System.Drawing.Point(10, 76);
             this.run_config_box.Margin = new System.Windows.Forms.Padding(7, 5, 7, 5);
             this.run_config_box.Multiline = true;
             this.run_config_box.Name = "run_config_box";
             this.run_config_box.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.run_config_box.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.run_config_box.Size = new System.Drawing.Size(601, 95);
+            this.run_config_box.Size = new System.Drawing.Size(505, 57);
             this.run_config_box.TabIndex = 50;
             // 
             // execute_btn
             // 
             this.execute_btn.BackColor = System.Drawing.Color.SpringGreen;
-            this.execute_btn.Location = new System.Drawing.Point(10, 179);
+            this.execute_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.execute_btn.Location = new System.Drawing.Point(10, 141);
             this.execute_btn.Name = "execute_btn";
-            this.execute_btn.Size = new System.Drawing.Size(306, 32);
+            this.execute_btn.Size = new System.Drawing.Size(250, 70);
             this.execute_btn.TabIndex = 4;
-            this.execute_btn.Text = "Execute";
+            this.execute_btn.Text = "Start";
             this.execute_btn.UseVisualStyleBackColor = false;
             this.execute_btn.Click += new System.EventHandler(this.execute_btn_Click);
             // 
@@ -806,19 +814,59 @@
             this.l_TestProgram.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.l_TestProgram.Location = new System.Drawing.Point(7, 56);
             this.l_TestProgram.Name = "l_TestProgram";
-            this.l_TestProgram.Size = new System.Drawing.Size(123, 15);
+            this.l_TestProgram.Size = new System.Drawing.Size(90, 15);
             this.l_TestProgram.TabIndex = 0;
-            this.l_TestProgram.Text = "Run Configuration";
+            this.l_TestProgram.Text = "Feature Note";
             // 
-            // tab_control
+            // tabs
             // 
-            this.tab_control.Controls.Add(this.tab_tp_deploy);
-            this.tab_control.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tab_control.Location = new System.Drawing.Point(12, 8);
-            this.tab_control.Name = "tab_control";
-            this.tab_control.SelectedIndex = 0;
-            this.tab_control.Size = new System.Drawing.Size(629, 251);
-            this.tab_control.TabIndex = 1;
+            this.tabs.Controls.Add(this.tab_features);
+            this.tabs.Controls.Add(this.tab_about);
+            this.tabs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabs.Location = new System.Drawing.Point(628, 16);
+            this.tabs.Name = "tabs";
+            this.tabs.SelectedIndex = 0;
+            this.tabs.Size = new System.Drawing.Size(533, 251);
+            this.tabs.TabIndex = 1;
+            // 
+            // tab_about
+            // 
+            this.tab_about.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.tab_about.Controls.Add(this.open_guide_btn);
+            this.tab_about.Controls.Add(this.textBox1);
+            this.tab_about.Location = new System.Drawing.Point(4, 25);
+            this.tab_about.Name = "tab_about";
+            this.tab_about.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_about.Size = new System.Drawing.Size(525, 222);
+            this.tab_about.TabIndex = 1;
+            this.tab_about.Text = "About";
+            // 
+            // open_guide_btn
+            // 
+            this.open_guide_btn.BackColor = System.Drawing.Color.SkyBlue;
+            this.open_guide_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.open_guide_btn.Location = new System.Drawing.Point(495, 3);
+            this.open_guide_btn.Name = "open_guide_btn";
+            this.open_guide_btn.Size = new System.Drawing.Size(27, 32);
+            this.open_guide_btn.TabIndex = 44;
+            this.open_guide_btn.Text = "?";
+            this.open_guide_btn.UseVisualStyleBackColor = false;
+            this.open_guide_btn.Click += new System.EventHandler(this.open_guide_btn_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.Color.Navy;
+            this.textBox1.Location = new System.Drawing.Point(0, 0);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(525, 222);
+            this.textBox1.TabIndex = 1;
+            this.textBox1.Text = "EAGLE (Enhanced Aguila Graphical Layout Engine)\r\n\r\nBuild 0.1 - Released on 19 Oct" +
+    " 2024\r\n\r\nOwners: \r\n- Dam, Kien Thong\r\n- Ngo, Thi Xuan Thanh\r\n- Do, Phu Thinh\r\n\r\n" +
+    "Powered by VNAT PPV Module Engineers";
             // 
             // contextMenuStrip1
             // 
@@ -834,20 +882,22 @@
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.ClientSize = new System.Drawing.Size(1170, 770);
             this.Controls.Add(this.tab_result);
-            this.Controls.Add(this.tab_control);
+            this.Controls.Add(this.tabs);
             this.Controls.Add(this.gb_cell_selection);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AguilaRemoteControl";
-            this.Text = "EAGLE v0.2 (ARL super vip)";
+            this.Text = "EAGLE (Enhanced Aguila Graphical Layout Engine)";
             this.gb_cell_selection.ResumeLayout(false);
             this.gb_cell_selection.PerformLayout();
             this.tab_result.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.clear_console.ResumeLayout(false);
-            this.tab_tp_deploy.ResumeLayout(false);
-            this.tab_tp_deploy.PerformLayout();
-            this.tab_control.ResumeLayout(false);
+            this.tab_features.ResumeLayout(false);
+            this.tab_features.PerformLayout();
+            this.tabs.ResumeLayout(false);
+            this.tab_about.ResumeLayout(false);
+            this.tab_about.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -901,11 +951,10 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.RichTextBox rtb_result;
         private System.Windows.Forms.CheckBox cb_select_all;
-        private System.Windows.Forms.TabPage tab_tp_deploy;
-        private System.Windows.Forms.TextBox run_config_box;
+        private System.Windows.Forms.TabPage tab_features;
         private System.Windows.Forms.Button execute_btn;
         private System.Windows.Forms.Label l_TestProgram;
-        private System.Windows.Forms.TabControl tab_control;
+        private System.Windows.Forms.TabControl tabs;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxFeatures;
         private System.Windows.Forms.Button ScanCells_btn;
@@ -915,6 +964,10 @@
         private System.Windows.Forms.ContextMenuStrip clear_console;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.TextBox run_config_box;
+        private System.Windows.Forms.TabPage tab_about;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button open_guide_btn;
     }
 }
 
