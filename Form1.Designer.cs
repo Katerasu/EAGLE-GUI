@@ -656,6 +656,7 @@
             this.cb_1.TabIndex = 0;
             this.cb_1.Text = "1.A101";
             this.cb_1.UseVisualStyleBackColor = true;
+            this.cb_1.CheckedChanged += new System.EventHandler(this.cb_1_CheckedChanged);
             // 
             // tab_result
             // 
@@ -864,9 +865,9 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(525, 222);
             this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "EAGLE (Enhanced Aguila Graphical Layout Engine)\r\n\r\nBuild 0.1 - Released on 19 Oct" +
-    " 2024\r\n\r\nOwners: \r\n- Dam, Kien Thong\r\n- Ngo, Thi Xuan Thanh\r\n- Do, Phu Thinh\r\n\r\n" +
-    "Powered by VNAT PPV Module Engineers";
+            this.textBox1.Text = "EAGLE (Enhanced Aguila Graphical Layout Engine)\r\n\r\nBuild [0.1] - Released on 19 O" +
+    "ct 2024\r\n\r\nOwners: \r\n- Dam, Kien Thong\r\n- Ngo, Thi Xuan Thanh\r\n- Do, Phu Thinh\r\n" +
+    "\r\nPowered by VNAT PPV Module Engineers";
             // 
             // contextMenuStrip1
             // 

@@ -47,6 +47,16 @@ namespace AguilaRemoteControl
             inputBox.BackColor = Color.Gray;
 
             run_config_box.ReadOnly = true;
+
+            // Assign the event handler to each checkbox
+            for (int i = 1; i <= 36; i++)
+            {
+                CheckBox cb = this.Controls.Find("cb_" + i, true)[0] as CheckBox;
+                if (cb != null)
+                {
+                    cb.CheckedChanged += CheckBox_CheckedChanged;
+                }
+            }
         }
 
         /////////////////// Features ///////////////////
@@ -351,6 +361,24 @@ namespace AguilaRemoteControl
             ScanCells_btn.Enabled = true;
         }
 
+        private void CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // Change checkbox backcolor
+            CheckBox cb = sender as CheckBox;
+            if (cb != null)
+            {
+                if (cb.Checked)
+                {
+                    cb.BackColor = Color.SpringGreen;
+                }
+                else
+                {
+                    cb.BackColor = gb_cell_selection.BackColor;
+                }
+            }
+        }
+
+
         /////////////////// Button Clicked ///////////////////
         private void disableElementForExecuting(bool disable)
         {
@@ -411,10 +439,58 @@ namespace AguilaRemoteControl
             { "sendInput_btn", Color.SkyBlue },
         };
 
+        public string[] metadataNames, metadataValues;
+        private string[] getGuiVersions()
+        {
+            try
+            {
+                // Read metadata for POR build
+                string metadataConfigPath = @"C:\Temp\EAGLE\Metadata.config";
+                if (mode == "test") metadataConfigPath = @".\Metadata.config";
+                // Load the XML document
+                XDocument xmlDoc = XDocument.Load(metadataConfigPath);
+                // Query the document to retrieve the feature elements
+                var metadata = xmlDoc.Descendants("metadata")
+                                     .Select(f => new
+                                     {
+                                         Name = f.Attribute("name").Value,
+                                         Value = f.Attribute("value").Value,
+                                     })
+                                     .ToList();
+                // Convert the results to arrays
+                metadataNames = metadata.Select(f => f.Name).ToArray();
+                metadataValues = metadata.Select(f => f.Value).ToArray();
+                // Get POR build
+                string porBuild = metadataValues[Array.IndexOf(metadataNames, "build")];
+
+                // Get current GUI version from inside [] of textBox1
+                string currentGuiVersion = textBox1.Text.Split('[').Last().Split(']').First();
+
+                string[] result = { porBuild, currentGuiVersion };
+
+                return result;
+            }
+            catch
+            {
+                WriteLine("Fail to check current version");
+                return new string[] { "0", "0" };
+            }
+        }
+
         private Process process;
         private StreamWriter streamWriter;
         private void execute_btn_Click(object sender, EventArgs e)
         {
+            // If not correct build, threw alarm and exit from this function
+            string[] versions = getGuiVersions();
+            string porBuild = versions[0];
+            string currentGuiVersion = versions[1];
+            if (porBuild != currentGuiVersion)
+            {
+                WriteLine($@"Error: Detect outdated build ([{currentGuiVersion}] vs POR build [{porBuild}]), please close the GUI and open again!");
+                return;
+            }
+
             disableElementForExecuting(true);
 
             var result = CheckCheckBoxes();
@@ -545,10 +621,24 @@ namespace AguilaRemoteControl
 
         }
 
+        private void cb_1_CheckedChanged(object sender, EventArgs e)
+        {
+            // Change checkbox backcolor
+            CheckBox cb = this.Controls.Find("cb_1", true)[0] as CheckBox;
+            if (cb.Checked)
+            {
+                cb.BackColor = Color.ForestGreen;
+            }
+            else
+            {
+                cb.BackColor = gb_cell_selection.BackColor;
+            }
+        }
+
         private void open_guide_btn_Click(object sender, EventArgs e)
         {   try
             {
-                string src = @"\\ssfile1\SPE_Shared\EAGLE\UserGuide\EAGLE_UserGuide_VN.pdf";
+                string src = @"\\ssfile1\SPE_Shared\EAGLE\UserGuide\EAGLE_UserGuide_VN.pdf"; // ,<--------------------Change to relative path
                 string des = @"C:\Temp\EAGLE\EAGLE_UserGuide_VN.pdf";
 
                 if (mode == "test") src = @"EAGLE_UserGuide_VN.pdf";
