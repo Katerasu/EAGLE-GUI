@@ -120,6 +120,23 @@
   <metadata name="clear_console.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>EAGLE (Enhanced Aguila Graphical Layout Engine)
+
+Build [1.0] - Released on 08 Jan 2025
+
+Change logs - kdam:
+- Message contain "[DEBUG]" will show in log only.
+- Change cell color when selected.
+- When click Start button, GUI will check for latest version and won't run if mismatch.
+
+Owners: 
+- Dam, Kien Thong
+- Ngo, Thi Xuan Thanh
+- Do, Phu Thinh
+
+Powered by VNAT PPV Module Engineers</value>
+  </data>
   <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>142, 17</value>
   </metadata>

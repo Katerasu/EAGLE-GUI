@@ -37,6 +37,8 @@ namespace AguilaRemoteControl
 
             LoadFeatures();
 
+            LoadMetadata();
+
             abort_btn.Enabled = false;
             abort_btn.BackColor = Color.Gray;
 
@@ -59,8 +61,10 @@ namespace AguilaRemoteControl
             }
         }
 
+        
+
         /////////////////// Features ///////////////////
-        public string mode = "production";
+        public string mode = "test";
         public string[] cmds, names, notes;
         private void LoadFeatures()
         {
@@ -87,6 +91,7 @@ namespace AguilaRemoteControl
 
             WriteConsole("Welcome to EAGLE, please select feature.");
         }
+
         public string featureCommand = "";
         public string featureName = "";
         private void comboBoxFeatures_SelectedIndexChanged(object sender, EventArgs e)
@@ -139,6 +144,11 @@ namespace AguilaRemoteControl
 
         void WriteLine(string message_child)
         {
+            if (message_child.Contains("[DEBUG]"))
+            {
+                return;
+            }
+
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
             string currentFeature = "[EAGLE]: ";
             if (comboBoxFeatures.InvokeRequired) 
@@ -440,7 +450,7 @@ namespace AguilaRemoteControl
         };
 
         public string[] metadataNames, metadataValues;
-        private string[] getGuiVersions()
+        private void LoadMetadata()
         {
             try
             {
@@ -460,10 +470,20 @@ namespace AguilaRemoteControl
                 // Convert the results to arrays
                 metadataNames = metadata.Select(f => f.Name).ToArray();
                 metadataValues = metadata.Select(f => f.Value).ToArray();
-                // Get POR build
+            }
+            catch
+            {
+                WriteLine("Fail to load Metadata, please check C:\\Temp\\EAGLE\\Metadata.config");
+            }
+
+        }
+
+        private string[] getGuiVersions()
+        {
+            try
+            {
                 string porBuild = metadataValues[Array.IndexOf(metadataNames, "build")];
 
-                // Get current GUI version from inside [] of textBox1
                 string currentGuiVersion = textBox1.Text.Split('[').Last().Split(']').First();
 
                 string[] result = { porBuild, currentGuiVersion };
@@ -638,10 +658,12 @@ namespace AguilaRemoteControl
         private void open_guide_btn_Click(object sender, EventArgs e)
         {   try
             {
-                string src = @"\\ssfile1\SPE_Shared\EAGLE\UserGuide\EAGLE_UserGuide_VN.pdf"; // ,<--------------------Change to relative path
+                //string src = @"\\ssfile1\SPE_Shared\EAGLE\UserGuide\EAGLE_UserGuide_VN.pdf"; // ,<---Change to relative path
+                string netAppPath = metadataValues[Array.IndexOf(metadataNames, "netAppPath")];
+                string src = netAppPath + @"\UserGuide\EAGLE_UserGuide_VN.pdf";
                 string des = @"C:\Temp\EAGLE\EAGLE_UserGuide_VN.pdf";
 
-                if (mode == "test") src = @"EAGLE_UserGuide_VN.pdf";
+                //if (mode == "test") src = @"EAGLE_UserGuide_VN.pdf";
 
                 File.Copy(src, des, true);
 
