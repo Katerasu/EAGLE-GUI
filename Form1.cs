@@ -64,7 +64,7 @@ namespace AguilaRemoteControl
         
 
         /////////////////// Features ///////////////////
-        public string mode = "test";
+        public string mode = "prod";
         public string[] cmds, names, notes;
         private void LoadFeatures()
         {
@@ -144,7 +144,7 @@ namespace AguilaRemoteControl
 
         void WriteLine(string message_child)
         {
-            if (message_child.Contains("[DEBUG]"))
+            if (message_child.Contains("DEBUG"))
             {
                 return;
             }
@@ -483,8 +483,10 @@ namespace AguilaRemoteControl
             try
             {
                 string porBuild = metadataValues[Array.IndexOf(metadataNames, "build")];
+                porBuild = porBuild.ToString();
 
                 string currentGuiVersion = textBox1.Text.Split('[').Last().Split(']').First();
+                currentGuiVersion = currentGuiVersion.ToString();
 
                 string[] result = { porBuild, currentGuiVersion };
 
@@ -561,8 +563,6 @@ namespace AguilaRemoteControl
 
             // Set EnableRaisingEvents to true to allow the Exited event to be raised
             process.EnableRaisingEvents = true;
-
-     
 
             process.Exited += (sender1, args) =>
             {

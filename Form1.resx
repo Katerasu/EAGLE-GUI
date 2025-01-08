@@ -126,7 +126,7 @@
 Build [1.0] - Released on 08 Jan 2025
 
 Change logs - kdam:
-- Message contain "[DEBUG]" will show in log only.
+- Message contain "DEBUG" will show in log only.
 - Change cell color when selected.
 - When click Start button, GUI will check for latest version and won't run if mismatch.
 
