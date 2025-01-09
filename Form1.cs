@@ -37,7 +37,9 @@ namespace AguilaRemoteControl
 
             LoadFeatures();
 
-            LoadMetadata();
+            loadLocalMetadata();
+
+            AddCmdKeyAllCells();
 
             abort_btn.Enabled = false;
             abort_btn.BackColor = Color.Gray;
@@ -61,10 +63,10 @@ namespace AguilaRemoteControl
             }
         }
 
-        
+
 
         /////////////////// Features ///////////////////
-        public string mode = "prod";
+        public string mode = "production";
         public string[] cmds, names, notes;
         private void LoadFeatures()
         {
@@ -104,6 +106,11 @@ namespace AguilaRemoteControl
         /////////////////// Write Text To Rich Text Box ///////////////////
         private void AppendLineToConsole(string text, Color textColor, Color backColor)
         {
+            if (text.Contains("DEBUG"))
+            {
+                return;
+            }
+
             //Set the color for the appended text
             rtb_result.SelectionStart = rtb_result.TextLength;
             rtb_result.SelectionLength = 0;
@@ -144,11 +151,6 @@ namespace AguilaRemoteControl
 
         void WriteLine(string message_child)
         {
-            if (message_child.Contains("DEBUG"))
-            {
-                return;
-            }
-
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
             string currentFeature = "[EAGLE]: ";
             if (comboBoxFeatures.InvokeRequired) 
@@ -371,6 +373,65 @@ namespace AguilaRemoteControl
             ScanCells_btn.Enabled = true;
         }
 
+        private Task AddCmdKeyToCell(string cellIp)
+        {
+            string command = $"cmdkey /add:{cellIp} /user:sysc /pass:tr@nsf3r";
+
+            // Create a new process start info
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = "/c " + $@"{command}",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardInput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            return Task.Run(() =>
+            {
+                try
+                {
+                    // Start the process using the Process class
+                    Process process = new Process { StartInfo = processStartInfo };
+                    process.Start();
+                    process.WaitForExit();
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions that occur during process execution
+                    WriteLine($"An error occurred during add CMDKEY for cell {cellIp}: {ex.Message}");
+                }
+            });
+        }
+
+        private async void AddCmdKeyAllCells()
+        {
+            List<string> cellsIp = new List<string>();
+
+            // Get all cells IP into string list
+            for (int i = 1; i <= 36; i++)
+            {
+                string ip = $"10.250.0.{i}";
+                cellsIp.Add(ip);
+            }
+
+            // Create a list to hold all the tasks
+            List<Task> tasks = new List<Task>();
+
+            foreach (string cellIp in cellsIp)
+            {
+                // Create a task for each cell IP
+                tasks.Add(AddCmdKeyToCell(cellIp));
+            }
+
+            // Wait for all tasks to complete
+            await Task.WhenAll(tasks);
+            WriteLine("Added CMDKEY for all cells!");
+            ScanCells_btn.Enabled = true;
+        }
+
         private void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
             // Change checkbox backcolor
@@ -449,16 +510,16 @@ namespace AguilaRemoteControl
             { "sendInput_btn", Color.SkyBlue },
         };
 
-        public string[] metadataNames, metadataValues;
-        private void LoadMetadata()
+        public string[] localMetadataNames, localMetadataValues;
+        private void loadLocalMetadata()
         {
             try
             {
-                // Read metadata for POR build
-                string metadataConfigPath = @"C:\Temp\EAGLE\Metadata.config";
-                if (mode == "test") metadataConfigPath = @".\Metadata.config";
+                // Read metadata in C\Temp for netAppPath
+                string localPath = @"C:\Temp\EAGLE\Metadata.config";
+                if (mode == "test") localPath = @".\Metadata.config";
                 // Load the XML document
-                XDocument xmlDoc = XDocument.Load(metadataConfigPath);
+                XDocument xmlDoc = XDocument.Load(localPath);
                 // Query the document to retrieve the feature elements
                 var metadata = xmlDoc.Descendants("metadata")
                                      .Select(f => new
@@ -468,25 +529,54 @@ namespace AguilaRemoteControl
                                      })
                                      .ToList();
                 // Convert the results to arrays
-                metadataNames = metadata.Select(f => f.Name).ToArray();
-                metadataValues = metadata.Select(f => f.Value).ToArray();
+                localMetadataNames = metadata.Select(f => f.Name).ToArray();
+                localMetadataValues = metadata.Select(f => f.Value).ToArray();
             }
             catch
             {
                 WriteLine("Fail to load Metadata, please check C:\\Temp\\EAGLE\\Metadata.config");
             }
-
         }
+
+        public string[] netAppMetadataNames, netAppMetadataValues;
+        private void LoadNetAppMetadata()
+        {
+            string netAppPath = localMetadataValues[Array.IndexOf(localMetadataNames, "netAppPath")];
+            // Read metadata again on netapp for POR build
+            string netAppConfigPath = netAppPath + @"\Core\Metadata.config";
+
+            try
+            {
+                // Load the XML document
+                XDocument xmlDocNetApp = XDocument.Load(netAppConfigPath);
+                // Query the document to retrieve the feature elements
+                var metadataNetApp = xmlDocNetApp.Descendants("metadata")
+                                        .Select(f => new
+                                        {
+                                            Name = f.Attribute("name").Value,
+                                            Value = f.Attribute("value").Value,
+                                        })
+                                        .ToList();
+                // Convert the results to arrays
+                netAppMetadataNames = metadataNetApp.Select(f => f.Name).ToArray();
+                netAppMetadataValues = metadataNetApp.Select(f => f.Value).ToArray();
+            }
+            catch
+            {
+                WriteLine("Fail to load netapp Metadata, please check " + netAppConfigPath);
+            }
+        }
+
 
         private string[] getGuiVersions()
         {
             try
             {
-                string porBuild = metadataValues[Array.IndexOf(metadataNames, "build")];
+                string porBuild = netAppMetadataValues[Array.IndexOf(netAppMetadataNames, "build")];
                 porBuild = porBuild.ToString();
 
-                string currentGuiVersion = textBox1.Text.Split('[').Last().Split(']').First();
-                currentGuiVersion = currentGuiVersion.ToString();
+                string currentGuiVersion = localMetadataValues[Array.IndexOf(localMetadataNames, "build")];
+                porBuild = porBuild.ToString();
 
                 string[] result = { porBuild, currentGuiVersion };
 
@@ -504,13 +594,20 @@ namespace AguilaRemoteControl
         private void execute_btn_Click(object sender, EventArgs e)
         {
             // If not correct build, threw alarm and exit from this function
+            LoadNetAppMetadata();
+
             string[] versions = getGuiVersions();
             string porBuild = versions[0];
             string currentGuiVersion = versions[1];
+            
             if (porBuild != currentGuiVersion)
             {
                 WriteLine($@"Error: Detect outdated build ([{currentGuiVersion}] vs POR build [{porBuild}]), please close the GUI and open again!");
                 return;
+            }
+            else
+            {
+                WriteLine($@"EAGLE build [{currentGuiVersion}] match with POR build!");
             }
 
             disableElementForExecuting(true);
@@ -659,7 +756,7 @@ namespace AguilaRemoteControl
         {   try
             {
                 //string src = @"\\ssfile1\SPE_Shared\EAGLE\UserGuide\EAGLE_UserGuide_VN.pdf"; // ,<---Change to relative path
-                string netAppPath = metadataValues[Array.IndexOf(metadataNames, "netAppPath")];
+                string netAppPath = localMetadataValues[Array.IndexOf(localMetadataNames, "netAppPath")];
                 string src = netAppPath + @"\UserGuide\EAGLE_UserGuide_VN.pdf";
                 string des = @"C:\Temp\EAGLE\EAGLE_UserGuide_VN.pdf";
 
