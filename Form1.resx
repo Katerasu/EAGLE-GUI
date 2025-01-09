@@ -129,6 +129,7 @@ Change logs - kdam:
 - Message contain "DEBUG" will show in log only.
 - Change cell color when selected.
 - When click Start button, GUI will check for latest version and won't run if mismatch.
+- CMDKEY for all cells.
 
 Owners: 
 - Dam, Kien Thong
